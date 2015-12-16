@@ -15,7 +15,6 @@ public class TestIm {
 
 	public static void main(String[] args) {
 		try {
-			//SASLAuthentication.supportSASLMechanism("PLAIN",0);
 			
 			XMPPTCPConnectionConfiguration.Builder configBuilder = XMPPTCPConnectionConfiguration.builder();
 			configBuilder.setUsernameAndPassword("cong", "123456");
