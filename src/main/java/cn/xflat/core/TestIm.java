@@ -35,7 +35,8 @@ public class TestIm {
 			// Log into the server
 			connection.login();
 			
-			Chat chat = ChatManager.getInstanceFor(connection).createChat("ding@113.106.92.68", new ChatMessageListener(){
+			Chat chat = ChatManager.getInstanceFor(connection)
+					.createChat("ding@113.106.92.68", new ChatMessageListener(){
 				public void processMessage(Chat chat, Message message) {
 					System.out.println("Received message: " + message); 
 				}
