@@ -21,7 +21,7 @@ public class TestIm {
 			configBuilder.setUsernameAndPassword("cong", "123456");
 			//configBuilder.setResource("SomeResource");
 			configBuilder.setServiceName("113.106.92.68");
-			//configBuilder.setHost("113.106.92.68");
+			configBuilder.setHost("113.106.92.68");
 			configBuilder.setSecurityMode(SecurityMode.disabled);
 			
 			
