@@ -23,7 +23,12 @@ public class TestIm {
 			configBuilder.setServiceName("113.106.92.68");
 			configBuilder.setHost("113.106.92.68");
 			configBuilder.setSecurityMode(SecurityMode.disabled);
+			configBuilder.setCompressionEnabled(false);
+			configBuilder.setDebuggerEnabled(true);
 			
+			//需要调用如下的方法，否则会出现错误: SASLErrorException: SASLError using DIGEST-MD5: not-authorized
+			SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
+			SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
 			
 			AbstractXMPPConnection connection = new XMPPTCPConnection(configBuilder.build());
 			// Connect to the server
