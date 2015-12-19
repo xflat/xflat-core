@@ -14,6 +14,7 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 public class TestIm {
 
 	public static void main(String[] args) {
+		
 		try {
 			
 			XMPPTCPConnectionConfiguration.Builder configBuilder = XMPPTCPConnectionConfiguration.builder();
