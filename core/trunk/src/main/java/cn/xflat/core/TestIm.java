@@ -1,5 +1,7 @@
 package cn.xflat.core;
 
+import java.util.Collection;
+
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
@@ -8,8 +10,11 @@ import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smackx.iqregister.packet.Registration;
 
 public class TestIm {
 
@@ -36,6 +41,13 @@ public class TestIm {
 			// Log into the server
 			connection.login();
 			
+			//获取好友列表
+			Roster roster = Roster.getInstanceFor(connection);
+			Collection<RosterEntry> entries = roster.getEntries();
+			for (RosterEntry entry : entries) {
+				System.out.println(">>>roster: " + entry);
+			}
+			
 			Chat chat = ChatManager.getInstanceFor(connection)
 					.createChat("ding@113.106.92.68", new ChatMessageListener(){
 				public void processMessage(Chat chat, Message message) {
@@ -47,4 +59,5 @@ public class TestIm {
 			ex.printStackTrace();
 		}
 	}
+	
 }
