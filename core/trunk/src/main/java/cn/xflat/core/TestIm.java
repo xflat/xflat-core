@@ -49,7 +49,7 @@ public class TestIm {
 			}
 			
 			Chat chat = ChatManager.getInstanceFor(connection)
-					.createChat("ding@113.106.92.68", new ChatMessageListener(){
+					.createChat("ding@r72002.localdomain", new ChatMessageListener(){
 				public void processMessage(Chat chat, Message message) {
 					System.out.println("Received message: " + message); 
 				}
