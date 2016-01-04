@@ -1,7 +1,7 @@
 package io.vertx.example.web.helloworld;
 
 import io.vertx.core.AbstractVerticle;
-//import io.vertx.example.util.Runner;
+import io.vertx.example.util.Runner;
 import io.vertx.ext.web.Router;
 
 /*
@@ -11,7 +11,7 @@ public class Server extends AbstractVerticle {
 
   // Convenience method so you can run it in your IDE
   public static void main(String[] args) {
-    //Runner.runExample(Server.class);
+    Runner.runExample(Server.class);
   }
 
   @Override
