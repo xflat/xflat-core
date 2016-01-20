@@ -8,8 +8,11 @@ public class ServerVerticle extends AbstractVerticle {
 
 	  @Override
 	  public void start() throws Exception {
-	    super.start();
+		  
+		super.start();
+		
 	    HttpServer server = vertx.createHttpServer();
+	    
 	    server.requestHandler(req -> {
 	      if (req.method() == HttpMethod.GET) {
 	        req.response().setChunked(true);
