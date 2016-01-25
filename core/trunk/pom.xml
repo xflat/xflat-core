@@ -12,6 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.2.4.RELEASE</spring.version>    
 	</properties>
 
 	<build>
@@ -58,6 +59,14 @@
 	</build>
 
 	<dependencies>
+		<!-- 
+		<dependency>
+			<groupId>com.bizcreator</groupId>
+  			<artifactId>app365-core</artifactId>
+  			<version>1.0.0</version>
+		</dependency>
+		 -->
+		 
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
@@ -83,26 +92,28 @@
 			<scope>test</scope>
 		</dependency>
 
+		 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.igniterealtime.smack</groupId>
 			<artifactId>smack-java7</artifactId>
