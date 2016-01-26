@@ -15,8 +15,105 @@
 		<spring.version>4.2.4.RELEASE</spring.version>    
 	</properties>
 
-	<build>
+	<dependencies>
+		 
+		<dependency>
+			<groupId>com.bizcreator</groupId>
+  			<artifactId>app365-core</artifactId>
+  			<version>1.0.0</version>
+		</dependency>
+		 
+		<!-- 		 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		 -->
+		<dependency>  
+            <groupId>org.springframework</groupId>  
+            <artifactId>spring-test</artifactId>  
+            <version>${spring.version}</version>  
+            <scope>provided</scope>  
+        </dependency>
+        
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-unit</artifactId>
+			<version>3.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
+		
+		 
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-java7</artifactId>
+			<version>4.1.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xpp3</groupId>
+					<artifactId>xpp3</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+			<version>1.1.3.4.O</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-tcp</artifactId>
+			<version>4.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-im</artifactId>
+			<version>4.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-extensions</artifactId>
+			<version>4.1.5</version>
+		</dependency>
+	</dependencies>
+
+	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -53,100 +150,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
-
 	</build>
-
-	<dependencies>
-		<!-- 
-		<dependency>
-			<groupId>com.bizcreator</groupId>
-  			<artifactId>app365-core</artifactId>
-  			<version>1.0.0</version>
-		</dependency>
-		 -->
-		 
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-web</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-unit</artifactId>
-			<version>3.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smack-java7</artifactId>
-			<version>4.1.5</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xpp3</groupId>
-					<artifactId>xpp3</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3</artifactId>
-			<version>1.1.3.4.O</version>
-		</dependency>
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smack-tcp</artifactId>
-			<version>4.1.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smack-im</artifactId>
-			<version>4.1.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smack-extensions</artifactId>
-			<version>4.1.5</version>
-		</dependency>
-		
-	</dependencies>
-
-
+	
 </project>
