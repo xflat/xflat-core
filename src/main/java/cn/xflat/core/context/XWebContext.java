@@ -49,6 +49,7 @@ public class XWebContext extends ExternalContext {
 	public XWebContext(RoutingContext routingCtx) {
 		
 		this.routingCtx = routingCtx;
+		this.request = routingCtx.request();
 		
 		 getRequestMap();
 	     getSessionMap();
@@ -104,7 +105,7 @@ public class XWebContext extends ExternalContext {
     @Override
     public Map<String,Object> getApplicationMap() {
         if (applicationMap == null) {
-            applicationMap = new XApplicationMap(routingCtx);
+            applicationMap = new XApplicationMap(routingCtx.vertx().sharedData());
         }
         return applicationMap;
     }
@@ -120,7 +121,7 @@ public class XWebContext extends ExternalContext {
 	@Override
 	public Map<String,Object> getRequestMap() {
         if (requestMap == null) {
-            requestMap = new VtxRequestMap(this.request);
+            requestMap = new XRequestMap(routingCtx);
         }
         return requestMap;
     }
@@ -128,7 +129,7 @@ public class XWebContext extends ExternalContext {
 	@Override
 	 public Map<String,String> getRequestHeaderMap() {
         if (null == requestHeaderMap) {
-            requestHeaderMap =Collections.unmodifiableMap(new VtxRequestHeaderMap(request));
+            requestHeaderMap =Collections.unmodifiableMap(new XRequestHeaderMap(request));
         }
         return requestHeaderMap;
     }
@@ -136,7 +137,7 @@ public class XWebContext extends ExternalContext {
 	@Override
 	public Map<String,String[]> getRequestHeaderValuesMap() {
         if (null == requestHeaderValuesMap) {
-            requestHeaderValuesMap = Collections.unmodifiableMap(new VtxRequestHeaderValuesMap(request));
+            requestHeaderValuesMap = Collections.unmodifiableMap(new XRequestHeaderValuesMap(request));
         }
         return requestHeaderValuesMap;
     }
@@ -144,15 +145,14 @@ public class XWebContext extends ExternalContext {
 	@Override
 	public Map<String,Object> getRequestCookieMap() {
         if (null == cookieMap) {
-            cookieMap =Collections.unmodifiableMap(new VtxRequestCookieMap(request));
+            cookieMap =Collections.unmodifiableMap(new XRequestCookieMap(routingCtx));
         }
         return cookieMap;
     }
 	
 	public Map<String,String> getInitParameterMap() {
         if (null == initParameterMap) {
-            initParameterMap =
-                Collections.unmodifiableMap(new VtxInitParameterMap(request));
+            initParameterMap = Collections.unmodifiableMap(new XInitParameterMap(routingCtx));
         }
         return initParameterMap;
     }
@@ -161,7 +161,7 @@ public class XWebContext extends ExternalContext {
     public Map<String,String> getRequestParameterMap() {
         if (null == requestParameterMap) {
             requestParameterMap =
-                Collections.unmodifiableMap(new VtxRequestParameterMap(request));
+                Collections.unmodifiableMap(new XRequestParameterMap(request));
         }
         return requestParameterMap;
     }
@@ -170,7 +170,7 @@ public class XWebContext extends ExternalContext {
         if (null == requestParameterValuesMap) {
             requestParameterValuesMap =
                 Collections.unmodifiableMap(
-                    new VtxRequestParameterValuesMap(request));
+                    new XRequestParameterValuesMap(request));
         }
         return requestParameterValuesMap;
     }
