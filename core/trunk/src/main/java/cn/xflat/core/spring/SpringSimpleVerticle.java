@@ -26,6 +26,7 @@ public class SpringSimpleVerticle extends AbstractVerticle {
     private Handler<Message<String>> allProductsHandler(ProductService service, String name) {
         return ms2g -> vertx.<String>executeBlocking(future -> {
                     try {
+                    	ms2g.body();
                         future.complete(mapper.writeValueAsString(service.getAllProducts(ms2g.body())));
                     } catch (JsonProcessingException e) {
                         System.out.println("Failed to serialize result");
