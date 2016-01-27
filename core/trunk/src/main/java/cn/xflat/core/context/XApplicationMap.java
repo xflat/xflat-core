@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.bizcreator.core.context.BaseContextMap;
 
+import io.vertx.core.shareddata.LocalMap;
+import io.vertx.core.shareddata.SharedData;
 import io.vertx.ext.web.RoutingContext;
 
 import java.util.Iterator;
@@ -17,21 +19,22 @@ import java.util.Iterator;
  */
 public class XApplicationMap extends BaseContextMap<Object> {
 
-    private final RoutingContext routingCtx;
-
+    private final SharedData  sd;
+    private LocalMap<String, Object> map;
     
     // ------------------------------------------------------------ Constructors
 
 
-    public XApplicationMap(RoutingContext routingCtx) {
-        this.routingCtx = routingCtx;
+    public XApplicationMap(SharedData sd) {
+        this.sd = sd;
+        this.map = sd.getLocalMap("_app_context");
     }
 
 
     // -------------------------------------------------------- Methods from Map
     @Override
     public void clear() {
-    	routingCtx.data().clear();
+    	map.clear();
     }
 
 
@@ -40,21 +43,21 @@ public class XApplicationMap extends BaseContextMap<Object> {
     public void putAll(Map t) {
         for (Iterator i = t.entrySet().iterator(); i.hasNext(); ) {
             Map.Entry entry = (Map.Entry) i.next();
-            routingCtx.put((String) entry.getKey(), entry.getValue());
+            map.put((String) entry.getKey(), entry.getValue());
         }
     }
 
 
     @Override
     public Object get(Object key) {
-        return routingCtx.get(key.toString());
+        return map.get(key.toString());
     }
 
 
     @Override
     public Object put(String key, Object value) {
-        Object result = routingCtx.get(key);
-        routingCtx.put(key, value);
+        Object result = map.get(key);
+        map.put(key, value);
         return (result);
     }
 
@@ -65,15 +68,15 @@ public class XApplicationMap extends BaseContextMap<Object> {
             return null;
         }
         String keyString = key.toString();
-        Object result = routingCtx.get(keyString);
-        routingCtx.data().remove(keyString);
+        Object result = map.get(keyString);
+        map.remove(keyString);
         return (result);
     }
 
 
     @Override
     public boolean containsKey(Object key) {
-        return (routingCtx.get(key.toString()) != null);
+        return (map.get(key.toString()) != null);
     }
 
 
@@ -86,7 +89,7 @@ public class XApplicationMap extends BaseContextMap<Object> {
 
     @Override
     public int hashCode() {
-        int hashCode = 7 * routingCtx.hashCode();
+        int hashCode = 7 * map.hashCode();
         for (Iterator i = entrySet().iterator(); i.hasNext(); ) {
             hashCode += i.next().hashCode();
         }
@@ -99,17 +102,17 @@ public class XApplicationMap extends BaseContextMap<Object> {
 
     @SuppressWarnings("unchecked")
     protected Iterator<Map.Entry<String, Object>> getEntryIterator() {
-    	return routingCtx.data().entrySet().iterator();
+    	return new EntryIterator(map.keySet().iterator());
     }
 
     @SuppressWarnings("unchecked")
     protected Iterator<String> getKeyIterator() {
-    	return routingCtx.data().keySet().iterator();
+    	return map.keySet().iterator();
     }
 
     @SuppressWarnings("unchecked")
     protected Iterator<Object> getValueIterator() {
-    	return routingCtx.data().values().iterator();
+    	return map.values().iterator();
     }
 
 } // END ApplicationMap
