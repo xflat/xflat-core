@@ -10,10 +10,11 @@ import java.util.Set;
 
 import cn.xflat.context.BaseContextMap;
 import cn.xflat.context.ExternalContext;
+import cn.xflat.context.ICookie;
 import io.vertx.ext.web.Cookie;
 import io.vertx.ext.web.RoutingContext;
 
-public class XRequestCookieMap extends BaseContextMap<Object> {
+public class XRequestCookieMap extends BaseContextMap<Object> implements ICookie {
 
 	private final RoutingContext routingCtx;
 	
@@ -28,10 +29,18 @@ public class XRequestCookieMap extends BaseContextMap<Object> {
         return routingCtx.getCookie(key.toString());
     }
 	
-	 @Override
-	    public Set<Map.Entry<String,Object>> entrySet() {
-	        return Collections.unmodifiableSet(super.entrySet());
-	    }
+	public String getValue(String key) {
+		Cookie cookie = (Cookie) get(key);
+		if (cookie != null) {
+			return cookie.getValue();
+		}
+		return null;
+	}
+	
+	@Override
+    public Set<Map.Entry<String,Object>> entrySet() {
+        return Collections.unmodifiableSet(super.entrySet());
+    }
 
 
 	    @Override
