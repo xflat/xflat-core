@@ -1,8 +1,5 @@
 package cn.xflat.core.spring;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import io.vertx.core.Vertx;
 
 public class Main {
