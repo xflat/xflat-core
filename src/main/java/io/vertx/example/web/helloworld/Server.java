@@ -3,6 +3,10 @@ package io.vertx.example.web.helloworld;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.example.util.Runner;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.CookieHandler;
+import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.sstore.LocalSessionStore;
+import io.vertx.ext.web.sstore.SessionStore;
 
 /*
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -19,6 +23,14 @@ public class Server extends AbstractVerticle {
 
     Router router = Router.router(vertx);
 
+    router.route().handler(CookieHandler.create());
+    
+    SessionStore store = LocalSessionStore.create(vertx);
+    SessionHandler sessionHandler = SessionHandler.create(store);
+
+    // Make sure all requests are routed through the session handler too
+    router.route().handler(sessionHandler);
+ 
     router.route().handler(routingContext -> {
       routingContext.response().putHeader("content-type", "text/html").end("Hello World!");
     });
