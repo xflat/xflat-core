@@ -1,5 +1,5 @@
 package cn.xflat.core;
 
-public class XFlatServer {
+public class XServer {
 
 }
