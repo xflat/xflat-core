@@ -16,9 +16,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-public class SpringApplicationContextHolder {
+public class SpringContextHolder {
 
-	private static Logger logger = LoggerFactory.getLogger(SpringApplicationContextHolder.class);
+	private static Logger logger = LoggerFactory.getLogger(SpringContextHolder.class);
 
 	private static JsonObject config;
 
@@ -38,14 +38,14 @@ public class SpringApplicationContextHolder {
 	 *            the vertx instance to add to the application context.
 	 */
 	public static void setVertx(Vertx vertx) {
-		SpringApplicationContextHolder.vertx = vertx;
+		SpringContextHolder.vertx = vertx;
 	}
 
 	public static void createApplicationContext(JsonObject config) {
 		try {
 			initializationLock.lock();
 			if (applicationContext == null) {
-				SpringApplicationContextHolder.config = config;
+				SpringContextHolder.config = config;
 				logger.debug("Staring to create the ApplicationContext");
 				String configType = config.getString("configType");
 				if (configType == null) {
