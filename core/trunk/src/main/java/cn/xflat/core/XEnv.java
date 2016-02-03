@@ -66,12 +66,6 @@ public class XEnv extends TheContext {
 	}
 
 	@Override
-	public InputStream getResourceAsStream(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void loadSql(String module, String action) {
 		// TODO Auto-generated method stub
 		

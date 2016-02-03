@@ -1,5 +1,7 @@
 package cn.xflat.core;
 
+import java.io.InputStream;
+
 import org.springframework.context.ApplicationContext;
 
 import cn.xflat.common.jdbc.SqlConfigBase;
@@ -27,12 +29,12 @@ public class XServer extends AbstractVerticle {
 		TheContext.dummy = new XEnv();
 		
 		//2. 加载spring环境
-		//loadSpringContext(vertx);
+		loadSpringContext(vertx);
 		
 		//3. 解析sql语句
 		//模拟一个context
         XEnv.set(new XEnv());
-        //loadSqlConfig();
+        loadSqlConfig();
         
 		//4. 部署XServer
 	    vertx.deployVerticle(new XServer());

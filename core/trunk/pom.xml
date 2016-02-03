@@ -23,6 +23,18 @@
   			<version>1.0.0</version>
 		</dependency>
 		 
+		 <dependency>
+			<groupId>com.app365</groupId>
+			<artifactId>app365-base</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>5.1.31</version>
+		</dependency>
+
 		<!-- 		 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -79,8 +91,6 @@
 		</dependency>
 		
 		
-		
-		 
 		<dependency>
 			<groupId>org.igniterealtime.smack</groupId>
 			<artifactId>smack-java7</artifactId>

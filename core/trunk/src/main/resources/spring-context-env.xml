@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <!-- 
+    <context:property-placeholder location="file:///E:/bizprojects/bizweb/bizweb.properties"/>
+    -->
+    
+    <!-- 
+    <bean id="propsConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>file:///E:/bizprojects/bizweb/bizweb.properties</value>
+        </property>
+    </bean>
+    -->
+    
+    <bean id="propsConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="file:///E:/ws-e45/bizweb/bizweb.properties"/>
+    </bean>
+
+    <bean id="idWorker" class="com.bizcreator.util.IdWorker">
+        <constructor-arg index="0" type="long" value="8"/>
+    </bean>
+    
+    <bean id="mongo" class="com.mongodb.Mongo">
+        <constructor-arg index="0" type="java.lang.String" value="${mongo.host}"/> 
+        <constructor-arg index="1" type="int" value="${mongo.port}"/> 
+    </bean>
+    
+    <bean id="mongoConfig" class="cn.xflat.common.mongodb.MongoConfig">
+        <property name="host" value="${mongo.host}"/>
+        <property name="port" value="${mongo.port}"/>
+         
+        <property name="dbName" value="appdefs"/>
+        <property name="username" value="${mongo.username}"/>
+        <property name="password" value="${mongo.password}"/>
+         
+        <property name="connectionsPerHost" value="100"/>
+        <property name="threadsAllowedToBlockForConnectionMultiplier" value="30"/>
+        <property name="maxWaitTime" value="120000"/><!-- ms -->
+        <property name="connectTimeout" value="10000"/> <!-- ms -->
+         
+        <property name="socketTimeout" value="0"/>
+        <property name="socketKeepAlive" value="true"/>
+        <property name="autoConnectRetry" value="true"/>
+        <property name="maxAutoConnectRetryTime" value="0"/>
+    </bean>
+    
+    <bean id = "mongoBase" class = "cn.xflat.common.mongodb.MongoBase">
+         <property name="config" ref="mongoConfig"/>
+    </bean>
+    
+    <!-- dsGlobal --> 
+    <bean id="dsGlobal" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${dsGlobal.host}:${dsGlobal.port}/${dsGlobal.dbName}?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true"/>
+        <property name="user" value="${dsGlobal.username}"/>
+        <property name="password" value="${dsGlobal.password}"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="maxStatements" value="30"/>
+        <property name="maxIdleTime" value="25200"/>
+    </bean>
+    
+    
+    <!-- dsApp365 -->
+    <bean id="dsApp365" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${dsApp365.host}:${dsApp365.port}/${dsApp365.dbName}?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true"/>
+        <property name="user" value="${dsApp365.username}"/>
+        <property name="password" value="${dsApp365.password}"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="maxStatements" value="30"/>
+        <property name="maxIdleTime" value="25200"/>
+    </bean>
+        
+    <!-- dsBiz130930 -->
+    <bean id="dsBiz130930" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${dsBiz130930.host}:${dsBiz130930.port}/${dsBiz130930.dbName}?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true"/>
+        <property name="user" value="${dsBiz130930.username}"/>
+        <property name="password" value="${dsBiz130930.password}"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="maxStatements" value="30"/>
+        <property name="maxIdleTime" value="25200"/>
+    </bean>
+                
+    <bean id="dataSource" class="com.bizcreator.base.service.BizRoutingDataSource">  
+        <property name="targetDataSources">  
+            <map key-type="java.lang.String">  
+                <entry key="dsApp365" value-ref="dsApp365"/>  
+                <entry key="dsBiz130930" value-ref="dsBiz130930"/>  
+            </map> 
+        </property>  
+        <property name="defaultTargetDataSource" ref="dsApp365"/>  
+    </bean>
+    
+    <bean id="cacheManager"  
+        class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">  
+        <property name="configLocation">  
+            <value>classpath:ehcache.xml</value>  
+        </property>  
+    </bean> 
+    
+    <!--bean id="sqlConfig" init-method="init"
+        class="com.bizcreator.core.config.SqlConfiguration">  
+        <property name="configLocation">  
+            <value>classpath:sql.cfg.xml</value>  
+        </property>  
+    </bean-->
+    
+</beans>
