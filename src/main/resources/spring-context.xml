@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <import resource="classpath*:org/springframework/extensions/webscripts/*-context.xml" />
+    
+    <import resource="classpath:spring-context-env.xml"/>
+	
+	<import resource="classpath:spring-context-common.xml"/>
+	
+	<import resource="classpath:spring-context-bizbase.xml"/>
+	
+<!--
+    <import resource="classpath:spring-context-core.xml"/>
+ 
+	<import resource="classpath:spring-context-message.xml"/>
+		
+	
+	
+	<import resource="classpath:spring-context-ilms.xml"/>
+	
+	<import resource="classpath:spring-context-gps.xml"/>
+	
+	<import resource="classpath:spring-context-voyage.xml"/>
+	
+	<import resource="classpath:spring-context-ems.xml"/>
+	
+	<import resource="classpath:spring-context-wms.xml"/>
+	
+	<import resource="classpath:spring-context-crm.xml"/>
+	
+	<import resource="classpath:spring-context-gl.xml"/>
+	
+	<import resource="classpath:spring-context-site56.xml"/>
+	
+	<import resource="classpath:spring-context-so56.xml"/>
+	-->
+	
+	
+<!-- 	
+	<import resource="classpath:spring-context-rest.xml"/>
+ -->	
+</beans>

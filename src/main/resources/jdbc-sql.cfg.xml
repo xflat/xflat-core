@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jdbc-sql>
+    <import url="sql-common.xml"/>
+	<import url="sql-core.xml"/>
+	<import url="sql-bizbase.xml"/>
+<!-- 	
+	<import url="sql-tools.xml"/>
+	<import url="sql-gl.xml"/>
+	<import url="sql-gps.xml"/>
+	<import url="sql-message.xml"/>
+	<import url="sql-crm.xml"/>
+	<import url="sql-ilms.xml"/>
+	<import url="sql-til.xml"/>
+	<import url="sql-ems.xml"/>
+	<import url="sql-wms.xml"/>
+	<import url="sql-skd.xml"/>
+	<import url="sql-api.xml"/>
+	<import url="sql-tpp.xml"/>
+	<import url="sql-voyage.xml"/>
+	<import url="sql-site56.xml"/>
+ -->	
+	<!-- 
+	<import url="sql-cyt.xml"/>
+	 -->
+</jdbc-sql>
