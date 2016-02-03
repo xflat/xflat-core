@@ -24,18 +24,15 @@ public class XServer extends AbstractVerticle {
 		final Vertx vertx = Vertx.vertx();
 		
 		//1. 创建一个dummy XEnv，以便通过dummy()调用其实例上的实用方法
-		XEnv.dummy = new XEnv();
+		TheContext.dummy = new XEnv();
 		
 		//2. 加载spring环境
-		loadSpringContext(vertx);
+		//loadSpringContext(vertx);
 		
 		//3. 解析sql语句
 		//模拟一个context
         XEnv.set(new XEnv());
-        SqlConfigBase sqlConfig = new SqlConfigBase();
-        sqlConfig.init();
-        sqlConfig.build();
-        XEnv.sqlConfig = sqlConfig;
+        //loadSqlConfig();
         
 		//4. 部署XServer
 	    vertx.deployVerticle(new XServer());
@@ -51,6 +48,13 @@ public class XServer extends AbstractVerticle {
 	    SpringContextHolder.createApplicationContext(configFiles);
 	    ApplicationContext context = SpringContextHolder.getApplicationContext();
 	    TheContext.springContext = context;
+	}
+	
+	public static void loadSqlConfig() {
+		SqlConfigBase sqlConfig = new SqlConfigBase();
+        sqlConfig.init();
+        sqlConfig.build();
+        XEnv.sqlConfig = sqlConfig;
 	}
 	
 	@Override
