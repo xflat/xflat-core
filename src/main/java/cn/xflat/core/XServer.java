@@ -1,5 +1,6 @@
 package cn.xflat.core;
 
+import cn.xflat.common.jdbc.SqlConfigBase;
 import cn.xflat.core.handler.WebContextHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
@@ -12,9 +13,21 @@ import io.vertx.ext.web.sstore.SessionStore;
 public class XServer extends AbstractVerticle {
 
 	public static void main(String[] args) {
-		//1. 加载spring环境
 		
-		//2. 部署XServer
+		//1. 创建一个dummy XEnv，以便通过dummy()调用其实例上的实用方法
+		XEnv.dummy = new XEnv();
+		
+		//2. 加载spring环境
+		
+		//3. 解析sql语句
+		//模拟一个context
+        XEnv.set(new XEnv());
+        SqlConfigBase sqlConfig = new SqlConfigBase();
+        sqlConfig.init();
+        sqlConfig.build();
+        XEnv.sqlConfig = sqlConfig;
+        
+		//4. 部署XServer
 		final Vertx vertx = Vertx.vertx();
 	    vertx.deployVerticle(new XServer());
 	}

@@ -14,6 +14,10 @@ import io.vertx.ext.web.RoutingContext;
 
 public class XEnv extends TheContext {
 
+	public XEnv() {
+		
+	}
+	
 	public XEnv(XWebContext wc) {
 		this.webContext = wc;
 		set(this);
