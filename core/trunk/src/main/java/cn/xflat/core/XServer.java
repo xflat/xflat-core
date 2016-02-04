@@ -107,6 +107,11 @@ public class XServer extends AbstractVerticle {
 	    
 	    //3. 向客户端发送响应
 	    router.route().handler(routingContext -> {
+	    	vertx.executeBlocking(future -> {
+	    		
+	    	}, result -> {
+	    		
+	    	});
 	    	routingContext.response().putHeader("content-type", "text/html").end("Hello World!");
 	    });
 
