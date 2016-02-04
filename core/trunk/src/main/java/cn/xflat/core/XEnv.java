@@ -113,17 +113,7 @@ public class XEnv extends TheContext {
 		return null;
 	}
 
-	@Override
-	public String getUploadDir() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getCustomPath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public String getServerName() {
