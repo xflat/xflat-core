@@ -1,10 +1,12 @@
 package cn.xflat.core;
 
 import java.io.InputStream;
+import java.net.InetAddress;
 
 import org.springframework.context.ApplicationContext;
 
 import cn.xflat.common.jdbc.SqlConfigBase;
+import cn.xflat.common.mail.SendMail;
 import cn.xflat.context.TheContext;
 import cn.xflat.core.handler.WebContextHandler;
 import cn.xflat.core.spring.ConfigType;
@@ -34,7 +36,13 @@ public class XServer extends AbstractVerticle {
 		//3. 解析sql语句
 		//模拟一个context
         XEnv.set(new XEnv());
+        
+        //7. UPLOAD_DIR
+        String uploadDir = TheContext.getUploadDir();
+        
         loadSqlConfig();
+        
+        
         
 		//4. 部署XServer
 	    vertx.deployVerticle(new XServer());
@@ -57,6 +65,27 @@ public class XServer extends AbstractVerticle {
         sqlConfig.init();
         sqlConfig.build();
         XEnv.sqlConfig = sqlConfig;
+	}
+	
+	public static void printServerInfo() {
+		 //8. 显示服务器启动信息
+        System.out.println(">>>>server info:" /*+ sc.getServerInfo()*/);
+        try {
+        InetAddress inet = InetAddress.getLocalHost();
+        System.out.println("=========================================================");
+        System.out.println("HostAddress=" + inet.getHostAddress());
+        System.out.println("HostName=" + inet.getHostName());
+        System.out.println("CanonicalHostName=" + inet.getCanonicalHostName());
+        System.out.println("LocalHost=" + inet.getLocalHost());
+        //System.out.println("ServerIP=" + sc.getAttribute(TheContext.SERVER_IP));
+        System.out.println("SMTP Host=" + SendMail.smtp_host);
+        System.out.println("SMTP User=" + SendMail.smtp_user);
+        System.out.println("SMTP Password=" + SendMail.smtp_password);
+        System.out.println("UPLOAD DIR =" + TheContext.UPLOAD_DIR);
+        System.out.println("=========================================================");
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        }
 	}
 	
 	@Override
@@ -84,5 +113,7 @@ public class XServer extends AbstractVerticle {
 	    });
 
 	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+	    
+	    printServerInfo();
 	}
 }
