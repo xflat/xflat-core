@@ -42,8 +42,6 @@ public class XServer extends AbstractVerticle {
         
         loadSqlConfig();
         
-        
-        
 		//4. 部署XServer
 	    vertx.deployVerticle(new XServer());
 	}
@@ -112,6 +110,7 @@ public class XServer extends AbstractVerticle {
 	    	routingContext.response().putHeader("content-type", "text/html").end("Hello World!");
 	    });
 
+	    //4. 启动服务器
 	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
 	    
 	    printServerInfo();
