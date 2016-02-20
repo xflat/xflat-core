@@ -2,96 +2,65 @@ package cn.xflat.core.handler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cn.xflat.common.ServiceBase;
-import cn.xflat.common.jdbc.JdbcBase;
 import cn.xflat.core.XEnv;
 import cn.xflat.util.JSONConverter;
-import cn.xflat.util.Util;
+import cn.xflat.util.ServiceUtil;
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
 
-public class ApiHandler implements Handler<RoutingContext> {
+public class ApiHandler extends ServiceInvoker implements Handler<RoutingContext> {
 
 	private static final Logger log = LoggerFactory.getLogger(ApiHandler.class);
 	
 	@Override
 	public void handle(RoutingContext rc) {
+		
 		log.info("starting XEnv WebContext...");
+		
 		XEnv.start(rc);
 		
-		rc.next();
-	}
-
-	/**
-	 * 服务调用: 目前只接受JsonObject、JsonArray、无参数三种类型的参数
-	 * @param servicePath
-	 * @param args
-	 * @return
-	 */
-	protected Object invokeService(String servicePath, JsonElement args) {
+		HttpServerRequest req = rc.request();
+		String pathInfo = req.path();
+		if (pathInfo.endsWith("/")) 
+			pathInfo = pathInfo.substring(0, pathInfo.length()-1);
 		
-		Object result = null;
+		String dataStr = req.getParam("data");
+		JsonElement jel = null;
+		if (dataStr != null) {
+			jel = JSONConverter.parseJson(dataStr);
+		}
 		
-		String[] ps = servicePath.substring(1).split("/");
-		if (ps.length >= 2) {
-			String modelId = ps[0];
-			String mn = ps[1];
-			if (args == null && ps.length >= 3) {
-				String s = ps[2];
-				if (!s.startsWith("{") && !s.startsWith("["))
-					s = "{" + s + "}";
-				args = JSONConverter.parseJson(s);
-			}
-			
-			Method invokedMethod = null;
-			ServiceBase service = getService(modelId);
-			if (args == null)
-				invokedMethod = Util.findMethod(service.getClass(), mn, new Class[]{});
-			else if (args instanceof JsonObject)
-				invokedMethod = Util.findMethod(service.getClass(), mn, new Class[]{JsonObject.class});
-			else if (args instanceof JsonArray)
-				invokedMethod = Util.findMethod(service.getClass(), mn, new Class[]{JsonArray.class});
-			
-			if (invokedMethod != null) {
-				try {
-					result = invokedMethod.invoke(service, args);
-				} catch (IllegalArgumentException ex) {
-					result = ex;
-					ex.printStackTrace();
-				} catch (IllegalAccessException ex) {
-					result = ex;
-					ex.printStackTrace();
-				} catch (InvocationTargetException ex) {
-					ex.printStackTrace();
-					result = ex.getTargetException();
+		if (pathInfo.startsWith("/bizobjects")) {
+			String[] ps = pathInfo.substring(12).split("/");
+			if (jel != null && ps.length >= 1) {
+				JsonObject json = (JsonObject) jel;
+				String modelId = ps[0];
+				ServiceBase service = ServiceUtil.getModelService(modelId);
+				if (ps.length == 2) {
+					String id = ps[1];
+					json.addProperty("id", id);
 				}
+				Map<String, Object> map = service.save(modelId, json);
+				writeResponse(rc, map);
+				return;
 			}
+		} else {//执行方法调用
+			Object result = ServiceUtil.invoke(pathInfo, jel);
+			writeResponse(rc, result);
+			return;
 		}
-		return result;
-	}
-	
-	/**
-	 * 根据模型id获取对应的服务
-	 * @param modelId
-	 * @return
-	 */
-	protected ServiceBase getService(String modelId) {
-		String svcName = modelId + "Service";
-		if (modelId.endsWith("Service")) {
-			svcName = modelId;
-		}
-		ServiceBase service = (ServiceBase) XEnv.getBean(svcName);
-		if (service == null) {
-			service = JdbcBase.getInstance();
-		}
-		return service;
+		//resp.setCharacterEncoding(RESP_ENCODING);
+		writeResponse(rc, null, INVALID_URL, INVALID_URL_MSG);
+		
 	}
 }
