@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContext;
 import cn.xflat.common.jdbc.SqlConfigBase;
 import cn.xflat.common.mail.SendMail;
 import cn.xflat.context.TheContext;
+import cn.xflat.core.handler.ApiHandler;
+import cn.xflat.core.handler.RmiHandler;
 import cn.xflat.core.handler.WebContextHandler;
 import cn.xflat.core.spring.ConfigType;
 import cn.xflat.core.spring.SpringContextHolder;
@@ -16,6 +18,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
@@ -101,9 +104,16 @@ public class XServer extends AbstractVerticle {
 	    // Make sure all requests are routed through the session handler too
 	    router.route().handler(sessionHandler);
 	    
+	    //3. 启用BodyHandler 
+	    router.route().handler(BodyHandler.create());
+	    
 	    //3. 开启WebContext，以便spring相关的服务获取上下文进行处理
-	    WebContextHandler wcl = new WebContextHandler();
-	    router.route().handler(wcl);
+	    //WebContextHandler wcl = new WebContextHandler();
+	    //router.route().handler(wcl);
+	    
+	    //4. 服务调用
+	    router.post("/rmi").handler(new RmiHandler());
+	    router.route("/services").handler(new ApiHandler());
 	    
 	    //3. 向客户端发送响应
 	    router.route().handler(routingContext -> {
