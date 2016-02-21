@@ -30,6 +30,38 @@ public class XServer extends AbstractVerticle {
 
 	private static final Logger log = LoggerFactory.getLogger(XServer.class);
 	
+	@Override
+	public void start() throws Exception {
+
+	    Router router = Router.router(vertx);
+	    
+	    //1. 启用cookie
+	    router.route().handler(CookieHandler.create());
+	    
+	    //2. 启用session
+	    SessionStore store = LocalSessionStore.create(vertx);
+	    SessionHandler sessionHandler = SessionHandler.create(store);
+
+	    // Make sure all requests are routed through the session handler too
+	    router.route().handler(sessionHandler);
+	    
+	    //3. 启用BodyHandler 
+	    router.route().handler(BodyHandler.create());
+	    
+	    //3. 开启WebContext，以便spring相关的服务获取上下文进行处理
+	    //WebContextHandler wcl = new WebContextHandler();
+	    //router.route().handler(wcl);
+	    
+	    //4. 服务调用
+	    router.post("/rmi").blockingHandler(new RmiHandler());
+	    router.route("/services").blockingHandler(new ApiHandler());
+
+	    //5. 启动服务器
+	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+	    
+	    printServerInfo();
+	}
+	
 	public static void main(String[] args) {
 		
 		final Vertx vertx = Vertx.vertx();
@@ -92,37 +124,5 @@ public class XServer extends AbstractVerticle {
         	ex.printStackTrace();
         }
 	}
-	
-	@Override
-	public void start() throws Exception {
 
-	    Router router = Router.router(vertx);
-	    
-	    //1. 启用cookie
-	    router.route().handler(CookieHandler.create());
-	    
-	    //2. 启用session
-	    SessionStore store = LocalSessionStore.create(vertx);
-	    SessionHandler sessionHandler = SessionHandler.create(store);
-
-	    // Make sure all requests are routed through the session handler too
-	    router.route().handler(sessionHandler);
-	    
-	    //3. 启用BodyHandler 
-	    router.route().handler(BodyHandler.create());
-	    
-	    //3. 开启WebContext，以便spring相关的服务获取上下文进行处理
-	    //WebContextHandler wcl = new WebContextHandler();
-	    //router.route().handler(wcl);
-	    
-	    //4. 服务调用
-	    router.post("/rmi").blockingHandler(new RmiHandler());
-	    router.route("/services").blockingHandler(new ApiHandler());
-
-	    //5. 启动服务器
-	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
-	    
-	    printServerInfo();
-	}
-	
 }
