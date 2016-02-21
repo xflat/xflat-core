@@ -23,8 +23,12 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.TemplateHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
+import io.vertx.ext.web.templ.HandlebarsTemplateEngine;
+import io.vertx.ext.web.templ.TemplateEngine;
 
 public class XServer extends AbstractVerticle {
 
@@ -42,6 +46,8 @@ public class XServer extends AbstractVerticle {
 	    SessionStore store = LocalSessionStore.create(vertx);
 	    SessionHandler sessionHandler = SessionHandler.create(store);
 
+	    
+	    
 	    // Make sure all requests are routed through the session handler too
 	    router.route().handler(sessionHandler);
 	    
@@ -56,6 +62,18 @@ public class XServer extends AbstractVerticle {
 	    router.post("/rmi").blockingHandler(new RmiHandler());
 	    router.route("/services").blockingHandler(new ApiHandler());
 
+	    router.route("/static/*").handler(StaticHandler.create());
+	    
+	    TemplateEngine engine = HandlebarsTemplateEngine.create();
+	    TemplateHandler handler = TemplateHandler.create(engine);
+
+	    // This will route all GET requests starting with /dynamic/ to the template handler
+	    // E.g. /dynamic/graph.hbs will look for a template in /templates/dynamic/graph.hbs
+	    router.get("/dynamic/").handler(handler);
+
+	    // Route all GET requests for resource ending in .hbs to the template handler
+	    //router.getWithRegex(".+\\.hbs").handler(handler);
+	    
 	    //5. 启动服务器
 	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
 	    
