@@ -46,8 +46,6 @@ public class XServer extends AbstractVerticle {
 	    SessionStore store = LocalSessionStore.create(vertx);
 	    SessionHandler sessionHandler = SessionHandler.create(store);
 
-	    
-	    
 	    // Make sure all requests are routed through the session handler too
 	    router.route().handler(sessionHandler);
 	    
@@ -66,7 +64,7 @@ public class XServer extends AbstractVerticle {
 	    
 	    TemplateEngine engine = HandlebarsTemplateEngine.create();
 	    TemplateHandler handler = TemplateHandler.create(engine);
-
+	    
 	    // This will route all GET requests starting with /dynamic/ to the template handler
 	    // E.g. /dynamic/graph.hbs will look for a template in /templates/dynamic/graph.hbs
 	    router.get("/dynamic/").handler(handler);
