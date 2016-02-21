@@ -3,6 +3,8 @@ package cn.xflat.core;
 import java.io.InputStream;
 import java.net.InetAddress;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import cn.xflat.common.jdbc.SqlConfigBase;
@@ -10,7 +12,6 @@ import cn.xflat.common.mail.SendMail;
 import cn.xflat.context.TheContext;
 import cn.xflat.core.handler.ApiHandler;
 import cn.xflat.core.handler.RmiHandler;
-import cn.xflat.core.handler.WebContextHandler;
 import cn.xflat.core.spring.ConfigType;
 import cn.xflat.core.spring.SpringContextHolder;
 import io.vertx.core.AbstractVerticle;
@@ -18,6 +19,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
@@ -26,6 +28,8 @@ import io.vertx.ext.web.sstore.SessionStore;
 
 public class XServer extends AbstractVerticle {
 
+	private static final Logger log = LoggerFactory.getLogger(XServer.class);
+	
 	public static void main(String[] args) {
 		
 		final Vertx vertx = Vertx.vertx();
@@ -112,24 +116,13 @@ public class XServer extends AbstractVerticle {
 	    //router.route().handler(wcl);
 	    
 	    //4. 服务调用
-	    router.post("/rmi").handler(new RmiHandler());
-	    router.route("/services").handler(new ApiHandler());
-	    
-	    //3. 向客户端发送响应
-	    router.route().handler(routingContext -> {
-	    	vertx.executeBlocking(future -> {
-	    		
-	    	}, result -> {
-	    		
-	    	});
-	    	routingContext.response().putHeader("content-type", "text/html").end("Hello World!");
-	    });
+	    router.post("/rmi").blockingHandler(new RmiHandler());
+	    router.route("/services").blockingHandler(new ApiHandler());
 
-	    //4. 启动服务器
+	    //5. 启动服务器
 	    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
 	    
 	    printServerInfo();
 	}
-	
 	
 }
