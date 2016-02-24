@@ -59,15 +59,21 @@ public class XServer extends AbstractVerticle {
 	    //4. 服务调用
 	    router.post("/rmi").blockingHandler(new RmiHandler());
 	    router.route("/services").blockingHandler(new ApiHandler());
-
 	    router.route("/static/*").handler(StaticHandler.create());
 	    
 	    TemplateEngine engine = HandlebarsTemplateEngine.create();
 	    TemplateHandler handler = TemplateHandler.create(engine);
 	    
+	    router.get("/dynamic/*").handler(rc -> {
+	    	rc.put("request_path", rc.request().path());
+	    	rc.put("session_data", rc.session().data());
+	    	rc.put("name", "Vert.x Web");
+	    	rc.next();
+	    });
+
 	    // This will route all GET requests starting with /dynamic/ to the template handler
-	    // E.g. /dynamic/graph.hbs will look for a template in /templates/dynamic/graph.hbs
-	    router.get("/dynamic/").handler(handler);
+	    // E.g. /dynamic/graph.hbs will look for a template in /templates/graph.hbs
+	    router.get("/dynamic/*").handler(handler);
 
 	    // Route all GET requests for resource ending in .hbs to the template handler
 	    //router.getWithRegex(".+\\.hbs").handler(handler);
