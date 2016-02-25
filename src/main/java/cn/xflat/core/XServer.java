@@ -130,18 +130,18 @@ public class XServer extends AbstractVerticle {
 		 //8. 显示服务器启动信息
         System.out.println(">>>>server info:" /*+ sc.getServerInfo()*/);
         try {
-        InetAddress inet = InetAddress.getLocalHost();
-        System.out.println("=========================================================");
-        System.out.println("HostAddress=" + inet.getHostAddress());
-        System.out.println("HostName=" + inet.getHostName());
-        System.out.println("CanonicalHostName=" + inet.getCanonicalHostName());
-        System.out.println("LocalHost=" + inet.getLocalHost());
-        //System.out.println("ServerIP=" + sc.getAttribute(TheContext.SERVER_IP));
-        System.out.println("SMTP Host=" + SendMail.smtp_host);
-        System.out.println("SMTP User=" + SendMail.smtp_user);
-        System.out.println("SMTP Password=" + SendMail.smtp_password);
-        System.out.println("UPLOAD DIR =" + TheContext.UPLOAD_DIR);
-        System.out.println("=========================================================");
+	        InetAddress inet = InetAddress.getLocalHost();
+	        System.out.println("=========================================================");
+	        System.out.println("HostAddress=" + inet.getHostAddress());
+	        System.out.println("HostName=" + inet.getHostName());
+	        System.out.println("CanonicalHostName=" + inet.getCanonicalHostName());
+	        System.out.println("LocalHost=" + inet.getLocalHost());
+	        //System.out.println("ServerIP=" + sc.getAttribute(TheContext.SERVER_IP));
+	        System.out.println("SMTP Host=" + SendMail.smtp_host);
+	        System.out.println("SMTP User=" + SendMail.smtp_user);
+	        System.out.println("SMTP Password=" + SendMail.smtp_password);
+	        System.out.println("UPLOAD DIR =" + TheContext.UPLOAD_DIR);
+	        System.out.println("=========================================================");
         } catch (Exception ex) {
         	ex.printStackTrace();
         }
