@@ -15,6 +15,7 @@ import cn.xflat.core.handler.RmiHandler;
 import cn.xflat.core.spring.ConfigType;
 import cn.xflat.core.spring.SpringContextHolder;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -39,6 +40,7 @@ public class XServer extends AbstractVerticle {
 
 	    Router router = Router.router(vertx);
 	    
+	    
 	    //1. 启用cookie
 	    router.route().handler(CookieHandler.create());
 	    
@@ -52,6 +54,12 @@ public class XServer extends AbstractVerticle {
 	    //3. 启用BodyHandler 
 	    router.route().handler(BodyHandler.create());
 	    
+	    router.route().handler(ctx -> {
+	    	ctx.response().putHeader("Cache-Control", "no-cache");
+	    	
+	    	ctx.next();
+	    });
+	    
 	    //3. 开启WebContext，以便spring相关的服务获取上下文进行处理
 	    //WebContextHandler wcl = new WebContextHandler();
 	    //router.route().handler(wcl);
@@ -59,7 +67,7 @@ public class XServer extends AbstractVerticle {
 	    //4. 服务调用
 	    router.post("/rmi").blockingHandler(new RmiHandler());
 	    router.route("/services").blockingHandler(new ApiHandler());
-	    router.route("/static/*").handler(StaticHandler.create());
+	    router.route("/static/*").handler(StaticHandler.create().setCachingEnabled(false));
 	    
 	    TemplateEngine engine = HandlebarsTemplateEngine.create();
 	    TemplateHandler handler = TemplateHandler.create(engine);
@@ -104,7 +112,9 @@ public class XServer extends AbstractVerticle {
         loadSqlConfig();
         
 		//4. 部署XServer
-	    vertx.deployVerticle(new XServer());
+        DeploymentOptions options = new DeploymentOptions()
+        		.setConfig(new JsonObject().put("vertx.disableFileCaching", true));
+	    vertx.deployVerticle(new XServer(), options);
 	}
 	
 	public static void loadSpringContext(Vertx vertx) {
